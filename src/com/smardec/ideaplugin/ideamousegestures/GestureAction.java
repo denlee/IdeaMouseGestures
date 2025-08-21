@@ -26,16 +26,9 @@ public class GestureAction implements Comparable<GestureAction> {
 	private String gesture;
 	private String[] actionPath;
 
-	public static String formatDisplayGesture(String gesture) {
-		String displayString = "";
-		for (int i = 0; i < gesture.length(); i++) {
-			displayString += gesture.charAt(i);
-			if (i != gesture.length() - 1) {
-				displayString += ',';
-			}
-		}
-		return displayString;
-	}
+    public static String formatDisplayGesture(String gesture) {
+        return String.join(",", gesture.split(""));
+    }
 
 	public GestureAction(String gesture, String[] actionPath) {
 		this.gesture = gesture;
@@ -80,14 +73,14 @@ public class GestureAction implements Comparable<GestureAction> {
 		return actionPath;
 	}
 
-	public String getDisplayString() {
-		String result = formatDisplayGesture(gesture);
-		result += " (";
-		for (int i = 0; i < actionPath.length; i++) {
-			result += actionPath[i];
-			if (i < actionPath.length - 1) result += SEPARATOR;
-		}
-		result += ")";
-		return result;
-	}
+    public String getDisplayString() {
+        return formatDisplayGesture(gesture)
+                + " => "
+                + String.join(SEPARATOR, actionPath);
+    }
+
+    public String toString() {
+        return getDisplayString();
+    }
+
 }

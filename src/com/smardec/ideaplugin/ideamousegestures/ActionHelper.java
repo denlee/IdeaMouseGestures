@@ -127,7 +127,7 @@ public class ActionHelper {
 		rootNode = new Node(NodeType.GROUP, null, ROOT_NODE_TEXT, GROUP_ICON, null);
 		AnAction anAction = ActionManager.getInstance().getAction(IdeActions.GROUP_MAIN_MENU);
 		if (anAction instanceof DefaultActionGroup) {
-			AnAction[] mainMenus = ((DefaultActionGroup)anAction).getChildren(null);
+            AnAction[] mainMenus = ((DefaultActionGroup)anAction).getChildren(ActionManager.getInstance());
 			List<Node> childrenNodes = new LinkedList<Node>();
 			for (AnAction mainMenu : mainMenus) {
 				childrenNodes.addAll(Arrays.asList(convert(rootNode, mainMenu, actionNodes)));
@@ -146,14 +146,18 @@ public class ActionHelper {
 
 	public void invoke(String[] actionPath) {
 		Node actionNode = findActionNode(actionPath);
-		if (actionNode == null || actionNode.nodeType != NodeType.SIMPLE) return;
-		actionNode.action.actionPerformed(new AnActionEvent(null,
-												 DataManager.getInstance().getDataContext(),
-												 ActionPlaces.UNKNOWN,
-												 actionNode.action.getTemplatePresentation(),
-												 com.intellij.openapi.actionSystem.ActionManager.getInstance(),
-												 0));
-	}
+
+        if (actionNode == null || actionNode.nodeType != NodeType.SIMPLE) return;
+
+        final AnAction action = actionNode.action;
+
+        if (action != null) {
+            DataContext ctx = DataManager.getInstance().getDataContext();
+            AnActionEvent event = AnActionEvent.createFromAnAction(action, null, "MouseGesture", ctx);
+            action.actionPerformed(event);
+        }
+
+    }
 
 	public JPopupMenu createActionSelectionPopup(final IActionNodeSelectionListener selectionListener) {
 		JPopupMenu actionSelectionPopupMenu = new JPopupMenu();
@@ -235,22 +239,22 @@ public class ActionHelper {
 	}
 
 	private static Node[] convert(Node parent, AnAction action, List<Node> actionNodes) {
-		if (action instanceof Separator) return new Node[]{new Node(NodeType.SEPARATOR, parent, null, null, null)};
+        if (action instanceof Separator) return new Node[]{new Node(NodeType.SEPARATOR, parent, null, null, null)};
 		if (action instanceof DefaultActionGroup) {
 			DefaultActionGroup defaultActionGroup = (DefaultActionGroup)action;
 			Presentation presentation = defaultActionGroup.getTemplatePresentation();
 			String text = presentation.getText();
 			if (text == null) {
 				List<Node> childrenNodes = new LinkedList<Node>();
-				AnAction[] childrenActions = defaultActionGroup.getChildren(null);
-				for (AnAction childAction : childrenActions) {
+                AnAction[] childrenActions = defaultActionGroup.getChildren(ActionManager.getInstance());
+                for (AnAction childAction : childrenActions) {
 					childrenNodes.addAll(Arrays.asList(convert(parent, childAction, actionNodes)));
 				}
 				return childrenNodes.toArray(new Node[childrenNodes.size()]);
 			} else {
 				Node groupActionNode = new Node(NodeType.GROUP, parent, text, GROUP_ICON, null);
 				List<Node> childrenNodes = new LinkedList<Node>();
-				AnAction[] childrenActions = defaultActionGroup.getChildren(null);
+                AnAction[] childrenActions = defaultActionGroup.getChildren(ActionManager.getInstance());
 				for (AnAction childAction : childrenActions) {
 					childrenNodes.addAll(Arrays.asList(convert(groupActionNode, childAction, actionNodes)));
 				}

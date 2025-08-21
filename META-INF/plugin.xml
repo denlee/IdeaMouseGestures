@@ -2,17 +2,18 @@
     <name>IdeaMouseGestures</name>
     <description>
         <![CDATA[
-        IdeaMouseGestures plugin provides easy way to assign Idea's menu items to mouse gestures.
+        IdeaMouseGestures plugin provides easy way to assign Idea's menu items to mouse gestures (see Settings -> Mouse Gestures).
         Mouse gestures are recognized when the right mouse button is pressed.
         <br>Plugin contains open source (LGPL) components and documentation to add mouse gestures
         recognition and processing for any Swing application (<a href="http://www.smardec.com/products/mouse.html">Mouse Gestures library</a>).
         <br>The plugin is open source (LGPL). The distribution can be found at <a href="http://www.smardec.com/products/idea.html">http://www.smardec.com/products/idea.html</a>.
         <br>We appreciate any feedback (positive or negative). This helps us to improve the software.
-        <br><br>Special thanks to Pierre Le Lannic
+        <br><br>Special thanks to Pierre Le Lannic.
       ]]>
     </description>
     <change-notes>
         <![CDATA[
+        1.23 - Support IDEA 2023 and later.<br>
         1.11 - Support IDEA v9 or later;<br>
                Support other IntelliJ platforms (IntelliJ IDEA, RubyMine, WebStorm, PhpStorm, PyCharm and AppCode)<br>
         1.10 - Mouse gesture actions are triggered programmatically;<br>
@@ -36,17 +37,22 @@
         1.0  - Initial release.
       ]]>
     </change-notes>
-    <version>1.11-alpha</version>
+    <version>1.231</version>
     <depends>com.intellij.modules.lang</depends>
     <vendor email="idea@smardec.com" url="http://www.smardec.com">Smardec</vendor>
-    <idea-version since-build="93.13"/>
+    <idea-version since-build="231"/>
     <application-components>
         <component>
             <implementation-class>com.smardec.ideaplugin.ideamousegestures.MouseGesturesPlugin</implementation-class>
         </component>
     </application-components>
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-        <applicationConfigurable instance="com.smardec.ideaplugin.ideamousegestures.MouseGesturesConfiguable" id="MouseGesture" displayName="MouseGesture"  />
+        <applicationConfigurable instance="com.smardec.ideaplugin.ideamousegestures.MouseGesturesConfigurable"
+                                 id="MouseGesture"
+                                 displayName="Mouse Gestures"
+        />
+        <statusBarWidgetFactory implementation="com.smardec.ideaplugin.ideamousegestures.statusbar.PluginStatusBarWidgetFactory"
+                                id="mouse-gestures-plugin-status-bar-widget-factory-id"
+        />
     </extensions>
 </idea-plugin>

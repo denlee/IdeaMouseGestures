@@ -27,23 +27,23 @@ import com.smardec.ideaplugin.ideamousegestures.settings.SettingsPanel;
 
 import javax.swing.*;
 
-public class MouseGesturesConfiguable implements Configurable {
+public class MouseGesturesConfigurable implements Configurable {
 	private static final String PLUGIN_IMAGE = "com/smardec/ideaplugin/ideamousegestures/img/mouse.png";
 	private Settings theSettings;
 	private SettingsPanel theSettingsPanel;
 	private MouseGesturesPlugin app;
 
-	public MouseGesturesConfiguable(MouseGesturesPlugin app) {
-		this.app = app;
-		theSettings = new Settings();
-		theSettingsPanel = null;
-	}
+    public MouseGesturesConfigurable() {
+        this.app = MouseGesturesPlugin.getInstance();
+        theSettings = new Settings();
+        theSettingsPanel = null;
+    }
 
 	public String getDisplayName() {
 		return LangUtils.get(LangUtils.PLUGIN_DISPLAY_NAME);
 	}
 
-	public String getHelpTopic() {
+    public String getHelpTopic() {
 		return null;
 	}
 

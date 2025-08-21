@@ -18,11 +18,8 @@
 		<property name="IdeaMouseGestures.jar" value="IdeaMouseGestures.jar"/>
 		<property name="IdeaMouseGestures.metainf" value="META-INF"/>
 		<path id="classpath">
-			<pathelement location="${IdeaMouseGestures.lib}/openapi.jar"/>
-			<pathelement location="${IdeaMouseGestures.lib}/jdom.jar"/>
-			<pathelement location="${IdeaMouseGestures.lib}/annotations.jar"/>
-            <pathelement location="${IdeaMouseGestures.lib}/util.jar"/>
-			<pathelement location="${IdeaMouseGestures.build.classes}"/>
+            <fileset dir="${IdeaMouseGestures.lib}" includes="*.jar"/>
+            <pathelement location="${IdeaMouseGestures.build.classes}"/>
 		</path>
 	</target>
 

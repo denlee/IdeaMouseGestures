@@ -24,70 +24,82 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
-import com.intellij.openapi.util.InvalidDataException;
-import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.wm.StatusBar;
+import com.intellij.openapi.wm.StatusBarWidget;
+import com.intellij.openapi.wm.WindowManager;
 import com.smardec.helper.IdeaHelper;
 import com.smardec.ideaplugin.ideamousegestures.lang.LangUtils;
 import com.smardec.ideaplugin.ideamousegestures.settings.Settings;
+import com.smardec.ideaplugin.ideamousegestures.statusbar.PluginStatusBarWidget;
 import com.smardec.mousegestures.MouseGestures;
 import com.smardec.mousegestures.MouseGesturesListener;
 import com.smardec.mousegestures.Movements;
-import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
 
-@State(name = "MouseGestures", storages = { @Storage(id = "MouseGestures", file = "$APP_CONFIG$/mouseGestures.xml") })
-public class MouseGesturesPlugin implements ApplicationComponent
-		, PersistentStateComponent<Settings>
-{
+@State(name = "MouseGestures", storages = { @Storage(file = "$APP_CONFIG$/mouseGestures.xml") })
+public class MouseGesturesPlugin implements ApplicationComponent, PersistentStateComponent<Settings> {
+
 	private Settings theSettings;
 	private MouseGestures theMouseGestures;
 	private MouseGesturesListener theMouseGesturesListener;
 	private AWTEventListener thAwtEventListener;
 
+    private static MouseGesturesPlugin instance;
+
+    public static MouseGesturesPlugin getInstance() {
+        return instance;
+    }
+
 	public MouseGesturesPlugin() {
 		theSettings = new Settings();
 		theMouseGestures = createMouseGestures();
-		theMouseGesturesListener = new MouseGesturesListener() {
-			public void gestureMovementRecognized(String currentGesture) {
-				StatusBar statusBar = IdeaHelper.getCurrentStatusBar();
-				if (statusBar != null) {
-					GestureAction gestureAction = theSettings.getAction(currentGesture);
-					String info;
-					if (gestureAction != null) {
-						info = gestureAction.getDisplayString();
-					} else {
-						info = GestureAction.formatDisplayGesture(currentGesture) + " " +
-							   LangUtils.get(LangUtils.UNKNOW_GESTURE);
-					}
-					statusBar.setInfo(info);
-				}
-			}
+        theMouseGesturesListener = new MouseGesturesListener() {
+            public void gestureMovementRecognized(String currentGesture) {
+                processGestureAndApply(currentGesture, false);
+            }
 
 			public void processGesture(String gesture) {
-				try {
-					GestureAction gestureAction = theSettings.getAction(gesture);
-					if (gestureAction != null) {
-						ActionHelper.getInstance().invoke(gestureAction.getActionPath());
-					}
-					StatusBar statusBar = IdeaHelper.getCurrentStatusBar();
-					if (statusBar != null) {
-						statusBar.setInfo("");
-					}
-				} catch (Exception e) {
-					//
-				}
-			}
+                processGestureAndApply(gesture, true);
+            }
 		};
+
+        instance = this;
 	}
 
-	@NotNull
+    private void processGestureAndApply(String gesture, boolean apply) {
+        final GestureAction gestureAction = theSettings.getAction(gesture);
+
+        updateStatusBarWidget(gesture, gestureAction);
+
+        if (apply && gestureAction != null) {
+            ActionHelper.getInstance().invoke(gestureAction.getActionPath());
+        }
+    }
+
+    private void updateStatusBarWidget(String currentGesture, GestureAction gestureAction) {
+
+        final StatusBar statusBar = WindowManager.getInstance().getStatusBar(IdeaHelper.getCurrentProject());
+        if (statusBar == null) return;
+
+        final StatusBarWidget widget = statusBar.getWidget(PluginStatusBarWidget.ID);
+        if (widget instanceof PluginStatusBarWidget) {
+
+            final boolean recognized = gestureAction != null;
+
+            final String text = recognized ?
+                    gestureAction.getDisplayString() :
+                    GestureAction.formatDisplayGesture(currentGesture);
+
+            ((PluginStatusBarWidget) widget).setState(recognized, text);
+        }
+    }
+
+    @NotNull
 	public String getComponentName() {
 		return "com.smardec.ideaplugin.ideamousegestures.MouseGesturesPlugin";
 	}
