@@ -1,0 +1,113 @@
+<!--
+    An example file to configure mouse gestures in IntelliJ IDEA.
+    Mouse Gestures Plugin settings are stored in this file.
+    In Windows 10 and Idea 2025 this file is located in ${USER_HOME}\AppData\Roaming\JetBrains\IdeaIC2025.2\options .
+-->
+<application>
+    <component name="MouseGestures">
+        <grid-size>10</grid-size>
+        <block-right-click>true</block-right-click>
+        <diagonal-enabled>false</diagonal-enabled>
+        <mouse-trail-enabled>true</mouse-trail-enabled>
+        <mouse-trail-size>5</mouse-trail-size>
+        <mouse-trail-color>-52429</mouse-trail-color>
+        <gesture-actions>
+            <gesture-action>
+                <gesture>D</gesture>
+                <action-path>
+                    <action-path-item>Navigate</action-path-item>
+                    <action-path-item>Go to Line:Column…</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>DR</gesture>
+                <action-path>
+                    <action-path-item>Navigate</action-path-item>
+                    <action-path-item>Goto by Name Actions</action-path-item>
+                    <action-path-item>Go to Class...</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>L</gesture>
+                <action-path>
+                    <action-path-item>Navigate</action-path-item>
+                    <action-path-item>Back</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>LD</gesture>
+                <action-path>
+                    <action-path-item>Edit</action-path-item>
+                    <action-path-item>Find</action-path-item>
+                    <action-path-item>Find…</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>LDL</gesture>
+                <action-path>
+                    <action-path-item>Edit</action-path-item>
+                    <action-path-item>Find</action-path-item>
+                    <action-path-item>Find in Files…</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>R</gesture>
+                <action-path>
+                    <action-path-item>Navigate</action-path-item>
+                    <action-path-item>Forward</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>RL</gesture>
+                <action-path>
+                    <action-path-item>Window</action-path-item>
+                    <action-path-item>Editor Tabs</action-path-item>
+                    <action-path-item>Editor Close Actions</action-path-item>
+                    <action-path-item>Close Tab</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>RLR</gesture>
+                <action-path>
+                    <action-path-item>Window</action-path-item>
+                    <action-path-item>Editor Tabs</action-path-item>
+                    <action-path-item>Editor Close Actions</action-path-item>
+                    <action-path-item>Close All Tabs</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>RLU</gesture>
+                <action-path>
+                    <action-path-item>Window</action-path-item>
+                    <action-path-item>Editor Tabs</action-path-item>
+                    <action-path-item>Editor Close Actions</action-path-item>
+                    <action-path-item>Close Other Tabs</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>U</gesture>
+                <action-path>
+                    <action-path-item>Run</action-path-item>
+                    <action-path-item>Run/Debug</action-path-item>
+                    <action-path-item>Run</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>UD</gesture>
+                <action-path>
+                    <action-path-item>Run</action-path-item>
+                    <action-path-item>Run/Debug</action-path-item>
+                    <action-path-item>Debug</action-path-item>
+                </action-path>
+            </gesture-action>
+            <gesture-action>
+                <gesture>UR</gesture>
+                <action-path>
+                    <action-path-item>Navigate</action-path-item>
+                    <action-path-item>Goto by Name Actions</action-path-item>
+                    <action-path-item>Go to File…</action-path-item>
+                </action-path>
+            </gesture-action>
+        </gesture-actions>
+    </component>
+</application>
