@@ -2,8 +2,16 @@
 
   IdeaMouseGestures ANT build script.
 
-  To build the project you should copy openapi.jar and jdom.jar to the
+  To build the project you should copy
+    * annotations.jar
+    * app-client.jar
+    * util.jar
+    * util-8.jar
+  files from IDEA lib directory (e.g. "C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2025.2\lib")
+  to
   ${IdeaMouseGestures.lib} directory.
+
+  (later it makes sense to migrate the project to Maven or Gradle and using of IDEA SDK instead of these jars)
 
 -->
 <project name="IdeaMouseGestures" default="jar" basedir=".">
