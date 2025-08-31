@@ -4,10 +4,10 @@
         <![CDATA[
         IdeaMouseGestures plugin provides easy way to assign Idea's menu items to mouse gestures (see Settings -> Mouse Gestures).
         Mouse gestures are recognized when the right mouse button is pressed.
-        <br>Plugin contains open source (LGPL) components and documentation to add mouse gestures
+        <br><br>Plugin contains open source (LGPL) components and documentation to add mouse gestures
         recognition and processing for any Swing application (<a href="http://www.smardec.com/products/mouse.html">Mouse Gestures library</a>).
         <br>The plugin is open source (LGPL). The distribution can be found at <a href="http://www.smardec.com/products/idea.html">http://www.smardec.com/products/idea.html</a>.
-        <br>We appreciate any feedback (positive or negative). This helps us to improve the software.
+        <br><br>We appreciate any feedback (positive or negative). This helps us to improve the software.
         <br><br>Special thanks to Pierre Le Lannic.
       ]]>
     </description>
@@ -37,7 +37,7 @@
         1.0  - Initial release.
       ]]>
     </change-notes>
-    <version>1.231</version>
+    <version>1.23</version>
     <depends>com.intellij.modules.lang</depends>
     <vendor email="idea@smardec.com" url="http://www.smardec.com">Smardec</vendor>
     <idea-version since-build="231"/>
