@@ -21,6 +21,7 @@ package com.smardec.ideaplugin.ideamousegestures;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -127,7 +128,7 @@ public class ActionHelper {
 		rootNode = new Node(NodeType.GROUP, null, ROOT_NODE_TEXT, GROUP_ICON, null);
 		AnAction anAction = ActionManager.getInstance().getAction(IdeActions.GROUP_MAIN_MENU);
 		if (anAction instanceof DefaultActionGroup) {
-            AnAction[] mainMenus = ((DefaultActionGroup)anAction).getChildren(ActionManager.getInstance());
+            AnAction[] mainMenus = getGroupChildrenActions(((DefaultActionGroup) anAction));
 			List<Node> childrenNodes = new LinkedList<Node>();
 			for (AnAction mainMenu : mainMenus) {
 				childrenNodes.addAll(Arrays.asList(convert(rootNode, mainMenu, actionNodes)));
@@ -149,7 +150,15 @@ public class ActionHelper {
 
         if (actionNode == null || actionNode.nodeType != NodeType.SIMPLE) return;
 
-        final AnAction action = actionNode.action;
+        AnAction action = actionNode.action;
+
+        // The below check and getAction() call is not required when getGroupChildrenActionsIDEA25() is used
+        final ActionManager am = ActionManager.getInstance();
+        // Resolve stub → real action
+        if (action instanceof ActionStub) {
+            action = am.getAction(((ActionStub) action).getId());
+
+        }
 
         if (action != null) {
             DataContext ctx = DataManager.getInstance().getDataContext();
@@ -246,7 +255,7 @@ public class ActionHelper {
 			String text = presentation.getText();
 			if (text == null) {
 				List<Node> childrenNodes = new LinkedList<Node>();
-                AnAction[] childrenActions = defaultActionGroup.getChildren(ActionManager.getInstance());
+                AnAction[] childrenActions = getGroupChildrenActions(defaultActionGroup);
                 for (AnAction childAction : childrenActions) {
 					childrenNodes.addAll(Arrays.asList(convert(parent, childAction, actionNodes)));
 				}
@@ -254,7 +263,7 @@ public class ActionHelper {
 			} else {
 				Node groupActionNode = new Node(NodeType.GROUP, parent, text, GROUP_ICON, null);
 				List<Node> childrenNodes = new LinkedList<Node>();
-                AnAction[] childrenActions = defaultActionGroup.getChildren(ActionManager.getInstance());
+                AnAction[] childrenActions = getGroupChildrenActions(defaultActionGroup);
 				for (AnAction childAction : childrenActions) {
 					childrenNodes.addAll(Arrays.asList(convert(groupActionNode, childAction, actionNodes)));
 				}
@@ -273,7 +282,17 @@ public class ActionHelper {
 		}
 	}
 
-	private static JLabel getLabel(Node node, Color foreGround) {
+// The below implementation is compatible with IDEA 25 only, it is not compatible with IDEA 23-24.
+//    private static AnAction @NotNull [] getGroupChildrenActionsIDEA25(DefaultActionGroup defaultActionGroup) {
+//        return defaultActionGroup.getChildren(ActionManager.getInstance());
+//    }
+
+    // Compatible with IDEA 23-25, requires "instanceof ActionStub" checking in ActionHelper.invoke()
+     private static AnAction @NotNull [] getGroupChildrenActions(DefaultActionGroup defaultActionGroup) {
+        return defaultActionGroup.getChildActionsOrStubs();
+    }
+
+    private static JLabel getLabel(Node node, Color foreGround) {
 		JLabel label = new JLabel(node.text, node.icon, JLabel.LEADING);
 		label.setFont(label.getFont().deriveFont(12f));
 		label.setForeground(foreGround);
